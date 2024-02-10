@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BTC/USD Prices</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div id="app" class="max-w-[1000px] mx-auto">
+      <h1 class="font-bold text-3xl text-center text-blue-600 my-4">
+        Cryptocurrency Data
+      </h1>
+    </div>
+    <script>
+     
+      const row = (k, v, i) => {
+        // complete tr string
+        return `<tr>
+            <td class=" align-top p-4 border-t"><img class="h-full w-auto" src="${v['image']}" /></td>
+            <td class=" align-top p-4 border-t">${k}</td>
+            <td class=" align-top p-4 border-t"><a class="text-blue-400 font-bold hover:bg-blue-800" href="${v['website']}">${v['name']}</a></td>
+            <td class=" align-top p-4 border-t">${v['summary']}</td>
+            </tr>`
+      }      
+
+      const createTable = (data) => {
+        // create table string and insert it into "app" div before end
+        const values = Object.entries(data)
+        const rows = values.map((element,i) => {
+          return row(element[0],element[1],i)
+        })
+        console.log(rows)
+      const table = `<table class="w-full">${rows}</table>`
+      document.getElementById("app").insertAdjacentHTML("beforeend", table)
+
+      }
+
+      const url = "https://api.mtw-testnet.com/assets/all"
+      fetch(url)
+        .then((response) => {
+          return response.json()
+        })
+        .then((v) => createTable(v))
+        .catch((err) => console.log(err))
+    </script>
+  </body>
+</html>
